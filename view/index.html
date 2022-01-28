@@ -1,13 +1,14 @@
 <html>
   <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
     <title>Prueba de HTML en Correos Electrónicos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   </head>
   <body>
     <div class="container d-flex justify-content-center align-items-center vw-100 vh-100">
-      <div class="row col-sm-6 bg-dark p-5 rounded text-white">
+      <div class="row col-lg-8 col-md-10 bg-dark p-5 rounded-3 text-white">
         <form id="formulario">
-          <h2>Prueba de HTML en Correos Electrónicos</h2>
+          <h2 class="text-center mb-5">Prueba de HTML en Correos Electrónicos</h2>
           <div class="mb-3">
             <label for="email" class="form-label">Correo Electrónico</label>
             <input type="email" class="form-control" id="email" required>
@@ -17,7 +18,7 @@
             <textarea class="form-control" id="html" rows="8"></textarea>
           </div>
           <div class="d-grid gap-2">
-            <button class="btn btn-success" type="submit">Enviar</button>
+            <button class="btn btn-success" type="submit" id="send">Enviar</button>
           </div>
         </form>
       </div>
@@ -27,9 +28,22 @@
       var form = document.getElementById("formulario");
       var email = document.getElementById("email");
       var html = document.getElementById("html");
+      var send = document.getElementById("send");
+
+      function blockButton() {
+        send.innerText = "Enviando...";
+        send.disabled = true;
+      }
+
+      function enableButton() {
+        send.innerText = "Enviar";
+        send.disabled = false;
+      }
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
+
+        blockButton();
 
         fetch('/send', {
           method: "POST",
@@ -42,14 +56,14 @@
           })
         })
         .then(function (response) {
-          return response.ok ? response.json() : Promise.reject();
-        })
-        .then(function () {
-          alert('Correo enviado');
-        })
-        .catch(function () {
-          alert('Ocurrió un error al enviar el correo electrónico, verifica los datos');
-        })
+          enableButton();
+
+          if (response.ok) {
+            alert('Correo electrónico enviado');
+          } else {
+            alert('Ocurrió un error al enviar el correo electrónico');
+          }
+        });
       });
     </script>
   </body>
