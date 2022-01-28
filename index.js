@@ -8,7 +8,11 @@ const app = express();
 
 app.use(express.json());
 
-const validations = [body("html").notEmpty(), body("to").notEmpty()];
+const validations = [body("html").notEmpty(), body("to").notEmpty().isEmail()];
+
+app.get("/", function (request, response) {
+  response.sendFile(`${__dirname}/view/index.html`);
+});
 
 app.post("/send", validations, async function (request, response) {
   const errors = validationResult(request);
