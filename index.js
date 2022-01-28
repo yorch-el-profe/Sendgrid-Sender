@@ -2,7 +2,7 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const sgMail = require("@sendgrid/mail");
 
-sgMail.setApiKey(process.env.SENGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const app = express();
 
